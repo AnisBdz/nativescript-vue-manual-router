@@ -1,0 +1,24 @@
+{
+  "name": "nativescript-vue-manual-router",
+  "version": "1.0.0",
+  "description": "NativeScript Vue router implementaion base on manual routing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnisBdz/nativescript-vue-manual-router.git"
+  },
+  "keywords": [
+    "nativescript",
+    "nativescript-vue",
+    "router"
+  ],
+  "author": "Anis BOUCHEKHIMA <bouchekhima.anis@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AnisBdz/nativescript-vue-manual-router/issues"
+  },
+  "homepage": "https://github.com/AnisBdz/nativescript-vue-manual-router#readme"
+}
