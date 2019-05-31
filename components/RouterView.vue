@@ -1,33 +1,22 @@
-<!-- <template>
-	<Frame>
-		<slot />
+<template>
+	<Frame :id="id">
+		<Page actionBarHidden="true" />
 	</Frame>
-</template> -->
+</template>
 
 <script>
 
 	export default {
-		props: {
-			nested: {
-				type: Boolean,
-				default: false
+		name: 'RouterView',
+
+		data() {
+			return {
+				id: ''
 			}
 		},
 
-		render(h) {
-			const emptyPage = h('page', { actionBarHidden: true }, [])
-
-			if (!this.nested) {
-				return h('frame', {}, [ emptyPage ])
-			}
-
-			else {
-				return h('frame', {}, [h('page', { actionBarHidden: true }, [ ]) ])
-			}
-		},
-
-		mounted() {
-			console.log(this.nested)
+		created() {
+			this.id = '__router_view__' + this.$router._addView(this)
 		}
 	}
 
