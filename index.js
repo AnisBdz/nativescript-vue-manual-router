@@ -4,6 +4,9 @@ export default function install(Vue, { routes }) {
 
 	Vue.component('RouterView', RouterView)
 
+
+	const defaultOptionsFields = ['animated', 'transition', 'transitioniOS', 'transitionAndroid', 'clearHistory', 'backstackVisible']
+
 	Vue.prototype.$router = new Vue({
 		data: {
 			routes,
@@ -39,6 +42,14 @@ export default function install(Vue, { routes }) {
 					}
 
 					this.components.push(matched.component)
+
+					if (matched.options) {
+						for (let field of defaultOptionsFields) {
+							if (matched.options.hasOwnProperty(field) && !options.hasOwnProperty(field)) {
+								options[field] = matched.options[field]
+							}
+						}
+					}
 
 					await this._navigateComponent(matched.component, this.views[i].id, options)
 				}
