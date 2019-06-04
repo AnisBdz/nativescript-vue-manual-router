@@ -20,8 +20,8 @@
 		},
 
 		created() {
-			this.id = '__router_view__' + this.$router._addView(this)
-
+			this.id = '__router_view__' + this._uid
+			this.$router._addView(this)
 		}
 	}
 

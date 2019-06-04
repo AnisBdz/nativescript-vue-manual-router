@@ -6,24 +6,16 @@ export default function install(Vue, { routes }) {
 
 	Vue.component('RouterView', RouterView)
 
-
 	const defaultOptionsFields = ['animated', 'transition', 'transitioniOS', 'transitionAndroid', 'clearHistory', 'backstackVisible']
 
 	Vue.prototype.$router = new Vue({
 		data: {
 			routes,
-			views: [],
-			components: [],
-			viewCounter: 0
+			views: []
 		},
 
 		computed: {
-			pages() {
-				return this.views.map(view => getFrameById(view.id))
-								 .map(frame => frame ? frame.currentPage : null)
-			},
-
-			comps() {
+			components() {
 				return this.views.map(view  => getFrameById(view.id))
 								 .map(frame => frame ? frame.currentEntry : null)
 								 .map(entry => entry ? entry.__meta : null)
@@ -53,16 +45,14 @@ export default function install(Vue, { routes }) {
 				for (let i = 0; i < trail.length; i++) {
 					let matched = trail[i]
 
-					if (this.comps[i] && this.comps[i] == matched.component) {
+					if (this.components[i] && this.components[i] == matched.component) {
 						continue
 					}
 
 					else {
-						this.components.splice(i)
 						this.views.splice(i + 1)
 					}
 
-					this.components.push(matched.component)
 
 					if (matched.options) {
 						for (let field of defaultOptionsFields) {
@@ -97,7 +87,6 @@ export default function install(Vue, { routes }) {
 
 			_addView(view) {
 				this.views.push(view)
-				return this.viewCounter++
 			},
 
 			_findRecord(path, tree, trail = []) {
