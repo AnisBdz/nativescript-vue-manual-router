@@ -42,6 +42,13 @@ export default function install(Vue, { routes }) {
 				this.$route.matched = trail
 				this.$route.params = options.params || {}
 
+				// redirects
+				let lastRecord = trail[trail.length - 1]
+
+				if (lastRecord.redirect) {
+					return this.push(lastRecord.redirect, options)
+				}
+
 				for (let i = 0; i < trail.length; i++) {
 					let matched = trail[i]
 
