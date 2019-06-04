@@ -6,10 +6,6 @@
 
 <script>
 
-	function something() {
-
-	}
-
 	export default {
 		name: 'RouterView',
 

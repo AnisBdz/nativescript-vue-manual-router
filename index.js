@@ -72,7 +72,6 @@ export default function install(Vue, { routes }) {
 					await this._navigateComponent(matched.component, this.views[i].id, options)
 				}
 
-
 				for (let i = trail.length; i < this.views.length; i++) {
 					this._navigateComponent(Blank, this.views[i].id, { animated: false })
 				}
@@ -90,7 +89,6 @@ export default function install(Vue, { routes }) {
 					__meta: { component }
 				})
 			},
-
 
 			_addView(view) {
 				this.views.push(view)
@@ -147,7 +145,6 @@ export default function install(Vue, { routes }) {
 				return chunks
 			}
 		}
-
 	})
 
 	Vue.prototype.$route = new Vue({
@@ -157,5 +154,4 @@ export default function install(Vue, { routes }) {
 			params: {}
 		}
 	})
-
 }
