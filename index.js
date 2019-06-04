@@ -1,6 +1,7 @@
 import RouterView from './components/RouterView'
 import { getFrameById } from 'tns-core-modules/ui/frame'
 import Blank from './components/Blank'
+import Path from './utils/Path'
 
 export default function install(Vue, { routes }) {
 
@@ -29,6 +30,12 @@ export default function install(Vue, { routes }) {
 
 		methods: {
 			async push(path, options = {}) {
+				// relative path
+				let _path = new Path(path)
+				if (_path.isRelative()) {
+					path = _path.toAbsolutePath(this.$route.path)
+				}
+
 				// find record
 				let trail = this._findRecord(path, this.routes)
 
@@ -46,7 +53,12 @@ export default function install(Vue, { routes }) {
 				let lastRecord = trail[trail.length - 1]
 
 				if (lastRecord.redirect) {
-					return this.push(lastRecord.redirect, options)
+					let redirectPath = new Path(lastRecord.redirect)
+
+					if (redirectPath.isRelative()) redirectPath = redirectPath.toAbsolutePath(path)
+					else redirectPath = lastRecord.redirect
+
+					return this.push(redirectPath, options)
 				}
 
 				for (let i = 0; i < trail.length; i++) {
