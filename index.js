@@ -1,4 +1,6 @@
 import RouterView from './components/RouterView'
+import { getFrameById } from 'tns-core-modules/ui/frame'
+import Blank from './components/Blank'
 
 export default function install(Vue, { routes }) {
 
@@ -13,6 +15,24 @@ export default function install(Vue, { routes }) {
 			views: [],
 			components: [],
 			viewCounter: 0
+		},
+
+		computed: {
+			pages() {
+				return this.views.map(view => getFrameById(view.id))
+								 .map(frame => frame ? frame.currentPage : null)
+			},
+
+			comps() {
+				return this.views.map(view  => getFrameById(view.id))
+								 .map(frame => frame ? frame.currentEntry : null)
+								 .map(entry => entry ? entry.__meta : null)
+								 .map(meta  => meta  ? meta.component : null)
+			}
+		},
+
+		created() {
+			setInterval(() => this._updateViews(), 100)
 		},
 
 		methods: {
@@ -30,12 +50,13 @@ export default function install(Vue, { routes }) {
 				this.$route.matched = trail
 				this.$route.params = options.params || {}
 
-				// navigate manually to route
-				let i = -1
-				for (let matched of trail) {
-					i++
+				for (let i = 0; i < trail.length; i++) {
+					let matched = trail[i]
 
-					if (this.components[i] && this.components[i] == matched.component) continue
+					if (this.comps[i] && this.comps[i] == matched.component) {
+						continue
+					}
+
 					else {
 						this.components.splice(i)
 						this.views.splice(i + 1)
@@ -53,12 +74,23 @@ export default function install(Vue, { routes }) {
 
 					await this._navigateComponent(matched.component, this.views[i].id, options)
 				}
+
+
+				for (let i = trail.length; i < this.views.length; i++) {
+					this._navigateComponent(Blank, this.views[i].id, { animated: false })
+				}
+			},
+
+			_updateViews() {
+				this.views = [ ...this.views ]
 			},
 
 			_navigateComponent(component, viewId, options) {
 				return this.$navigateTo(component, {
 					...options,
-					frame: viewId
+					frame: viewId,
+
+					__meta: { component }
 				})
 			},
 

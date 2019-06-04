@@ -6,6 +6,10 @@
 
 <script>
 
+	function something() {
+
+	}
+
 	export default {
 		name: 'RouterView',
 
@@ -17,6 +21,7 @@
 
 		created() {
 			this.id = '__router_view__' + this.$router._addView(this)
+
 		}
 	}
 
